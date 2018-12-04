@@ -20,6 +20,7 @@
 <div>
 	<h3> {{i.name}}</h3>
 	<p> {{i.bio}}</p>
+	{% if isOwner %}
 	<!-- Edit Form -->
 	<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('editFounder',startup_id=startup.id, founder_id = i.id)}}'>
 		<input type='text' name='name' placeholder='name'/>
@@ -30,6 +31,7 @@
 	<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('deleteFounder',startup_id=startup.id, founder_id = i.id)}}'>
 		<button type='submit'> delete founder! </button>
 	</form>
+	{% endif %}
 </div>
 </br>
 {% endfor %}
