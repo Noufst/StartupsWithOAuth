@@ -1,0 +1,30 @@
+
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+	{% for message in messages %}
+	<li><strong>{{message}}</strong></li>
+	{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<!-- Iterate through the list item, display the startup name and it is href -->
+{% for i in list %}
+<a href = '{{url_for('showStartup', startup_id = i.id) }}'>{{i.name}}</a>
+</br>
+{% endfor %}
+
+{% if 'username' in session %}
+<h3> Add New Startup </h3>
+<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('showAllStartup')}}'>
+	<input type='text' name='name' placeholder='name'/>
+	<button type='submit'> Add Startup! </button>
+</form>
+{% endif %}
+
+{% endblock %}

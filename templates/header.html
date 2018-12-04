@@ -1,0 +1,12 @@
+
+<a href="{{url_for('showAllStartup')}}"><h2>Show All Startups</h2></a>
+
+<div>
+  {% if 'username' not in session%}
+  <a href="{{url_for('showLogin')}}"><h4>Login</h4></a>
+  {% else %}
+  <h3>Hello {{session['username']}}!</h3>
+  <h4><a href="{{url_for('gdisconnect')}}">Logout</a></h4>
+  {% endif %}
+</div>
+</div>
