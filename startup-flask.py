@@ -104,6 +104,7 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+    login_session['provider'] = 'google'
 
     # If user not exist, create a new one
     user_id = getUserID(login_session['email'])
@@ -141,18 +142,31 @@ def gdisconnect():
     print 'result is '
     print result
     if result['status'] == '200':
-        del login_session['access_token']
-    	del login_session['gplus_id']
-    	del login_session['username']
-    	del login_session['email']
-    	del login_session['picture']
-    	flash("You have successfully been logged out.")
-        return redirect(url_for('showAllStartup'))
+        response = make_response(json.dumps('Successfully Disconnected', 200))
+    	response.headers['Content-Type'] = 'application/json'
+    	return response
     else:
     	response = make_response(json.dumps('Failed to revoke token for given user.', 400))
     	response.headers['Content-Type'] = 'application/json'
     	return response
 
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['gplus_id']
+            del login_session['access_token']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        flash("You have successfully been logged out.")
+        return redirect(url_for('showAllStartup'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('showAllStartup'))
 
 # Startup details page
 @app.route('/Startup/<int:startup_id>',methods=['GET', 'POST'])
